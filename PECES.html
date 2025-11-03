@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tienda Acuática | Peces Domésticos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f7f7;
+      margin: 0;
+      color: #222;
+    }
+
+    header {
+      background-color: #008C99;
+      color: white;
+      text-align: center;
+      padding: 20px 0;
+      position: relative;
+    }
+
+    h1 { margin: 0; }
+
+    /* Carrito */
+    #carrito-contador {
+      position: absolute;
+      top: 15px;
+      right: 25px;
+      background: white;
+      color: #008C99;
+      border-radius: 20px;
+      padding: 8px 15px;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    /* Usuario */
+    #usuario-info {
+      position: absolute;
+      top: 15px;
+      left: 20px;
+      color: white;
+      font-size: 14px;
+    }
+
+    #usuario-info button {
+      background-color: white;
+      color: #008C99;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+      margin-left: 5px;
+    }
+
+    #usuario-info button:hover {
+      background-color: #f2f2f2;
+    }
+
+    /* Ventana login */
+    #login-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 200;
+    }
+
+    #login-box {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 300px;
+      text-align: center;
+    }
+
+    #login-box input {
+      width: 90%;
+      padding: 8px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    #login-box button {
+      background-color: #008C99;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* Cuenta */
+    #cuenta {
+      display: none;
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      background: white;
+      border: 2px solid #008C99;
+      border-radius: 10px;
+      width: 300px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      padding: 15px;
+      z-index: 150;
+    }
+
+    #cuenta h3 {
+      color: #008C99;
+      text-align: center;
+      margin-top: 0;
+    }
+
+    #historial {
+      max-height: 200px;
+      overflow-y: auto;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    /* Productos */
+    .contenedor {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .producto {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 250px;
+      text-align: center;
+      overflow: hidden;
+      transition: transform 0.3s;
+    }
+
+    .producto:hover { transform: translateY(-5px); }
+
+    .producto img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .info { padding: 15px; }
+
+    .precio {
+      color: #007b8a;
+      font-weight: bold;
+      margin: 8px 0;
+    }
+
+    .boton {
+      background-color: #008C99;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .boton:hover { background-color: #005f66; }
+
+    /* Carrito */
+    #carrito {
+      position: fixed;
+      top: 90px;
+      right: 20px;
+      background: white;
+      border: 2px solid #008C99;
+      border-radius: 10px;
+      width: 250px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      padding: 10px;
+      display: none;
+      z-index: 100;
+    }
+
+    #carrito h3 {
+      margin-top: 0;
+      color: #008C99;
+      text-align: center;
+    }
+
+    #lista-carrito {
+      list-style: none;
+      padding: 0;
+      margin: 10px 0;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    #finalizar {
+      width: 100%;
+      background-color: #007b8a;
+      color: white;
+      border: none;
+      padding: 8px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      background-color: #008C99;
+      color: white;
+      padding: 15px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🐠 Tienda Acuática - Peces Domésticos</h1>
+    <div id="usuario-info"></div>
+    <div id="carrito-contador">🛒 0</div>
+  </header>
+
+  <div class="volver" style="text-align:center; margin:20px;">
+    <a href="index.html"><button>⬅️ Volver a la página principal</button></a>
+  </div>
+
+  <section class="contenedor">
+    <!-- 🐟 Todos tus peces -->
+    <div class="producto"><img src="img/d.jpg" alt="Pez Dorado"><div class="info"><h2>Pez Dorado</h2><p>Colorido y resistente, ideal para principiantes.</p><p class="precio">$120 MXN</p><button class="boton">Comprar</button></div></div>
+
+    <div class="producto"><img src="beta.jpeg" alt="Pez Betta"><div class="info"><h2>Pez Betta</h2><p>Conocido por sus colores brillantes y elegancia.</p><p class="precio">$150 MXN</p><button class="boton">Comprar</button></div></div>
+
+    <div class="producto"><img src="guppy.jpeg" alt="Pez Guppy"><div class="info"><h2>Pez Guppy</h2><p>Pequeño, vivaz y muy fácil de cuidar.</p><p class="precio">$100 MXN</p><button class="boton">Comprar</button></div></div>
+
+    <div class="producto"><img src="angel.jpeg" alt="Pez Ángel"><div class="info"><h2>Pez Ángel</h2><p>Perfecto para acuarios comunitarios y elegantes.</p><p class="precio">$180 MXN</p><button class="boton">Comprar</button></div></div>
+
+    <div class="producto"><img src="gourami.jpeg" alt="Pez Gourami"><div class="info"><h2>Pez Gourami</h2><p>Un pez pacífico para acuarios comunitarios.</p><p class="precio">$160 MXN</p><button class="boton">Comprar</button></div></div>
+
+    <div class="producto"><img src="oscar.jpeg" alt="Pez Oscar"><div class="info"><h2>Pez Oscar</h2><p>Ideal para acuarios grandes y peces resistentes.</p><p class="precio">$250 MXN</p><button class="boton">Comprar</button></div></div>
+
+    <div class="producto"><img src="tetra.jpeg" alt="Pez Tetra"><div class="info"><h2>Pez Tetra</h2><p>Un pez pequeño y muy activo, ideal para acuarios comunitarios.</p><p class="precio">$80 MXN</p><button class="boton">Comprar</button></div></div>
+
+    <div class="producto"><img src="cebra.jpeg" alt="Pez Cebra"><div class="info"><h2>Pez Cebra</h2><p>Pequeños y muy resistentes, perfectos para acuarios pequeños.</p><p class="precio">$90 MXN</p><button class="boton">Comprar</button></div></div>
+
+    <div class="producto"><img src="koi.jpeg" alt="Pez Koi"><div class="info"><h2>Pez Koi</h2><p>Excelente opción para estanques grandes y jardines.</p><p class="precio">$300 MXN</p><button class="boton">Comprar</button></div></div>
+
+    <div class="producto"><img src="labeo.jpeg" alt="Pez Labeo"><div class="info"><h2>Pez Labeo</h2><p>Ideal para acuarios con plantas y rocas.</p><p class="precio">$130 MXN</p><button class="boton">Comprar</button></div></div>
+  </section>
+
+  <!-- Carrito -->
+  <div id="carrito">
+    <h3>🛒 Carrito de Compras</h3>
+    <ul id="lista-carrito"></ul>
+    <button id="finalizar">Finalizar compra</button>
+  </div>
+
+  <!-- Modal de Login -->
+  <div id="login-modal">
+    <div id="login-box">
+      <h3>Iniciar Sesión</h3>
+      <input type="text" id="nombre" placeholder="Nombre">
+      <input type="email" id="correo" placeholder="Correo electrónico">
+      <button id="iniciar">Entrar</button>
+    </div>
+  </div>
+
+  <!-- Cuenta del usuario -->
+  <div id="cuenta">
+    <h3>👤 Mi Cuenta</h3>
+    <p><strong>Nombre:</strong> <span id="nombreCuenta"></span></p>
+    <p><strong>Correo:</strong> <span id="correoCuenta"></span></p>
+    <h4>Historial de compras:</h4>
+    <div id="historial"></div>
+  </div>
+
+  <footer>
+    <p>© 2025 Tienda Acuática | Venta de peces domésticos</p>
+  </footer>
+
+ <script>
+  const botones = document.querySelectorAll('.boton');
+  const contador = document.getElementById('carrito-contador');
+  const carrito = document.getElementById('carrito');
+  const listaCarrito = document.getElementById('lista-carrito');
+  const finalizarBtn = document.getElementById('finalizar');
+  const usuarioInfo = document.getElementById('usuario-info');
+  const loginModal = document.getElementById('login-modal');
+  const iniciarBtn = document.getElementById('iniciar');
+  const cuentaDiv = document.getElementById('cuenta');
+
+  let productos = [];
+  let totalArticulos = 0;
+
+  // ✅ Recuperar sesión del usuario actual
+  let usuarioActual = localStorage.getItem("usuarioActual") || null;
+  let usuarios = JSON.parse(localStorage.getItem("usuarios")) || {};
+
+  function mostrarUsuario() {
+    if (usuarioActual && usuarios[usuarioActual]) {
+      const usuario = usuarios[usuarioActual];
+      usuarioInfo.innerHTML = `
+        Bienvenido, <strong>${usuario.nombre}</strong>
+        <button id="btnCuenta">Cuenta</button>
+        <button id="cerrarSesion">Cerrar sesión</button>
+      `;
+      document.getElementById('btnCuenta').addEventListener('click', toggleCuenta);
+      document.getElementById('cerrarSesion').addEventListener('click', cerrarSesion);
+    } else {
+      usuarioInfo.innerHTML = '';
+    }
+  }
+  mostrarUsuario();
+
+  // ✅ Comprar producto
+  botones.forEach(boton => {
+    boton.addEventListener('click', () => {
+      if (!usuarioActual) {
+        loginModal.style.display = 'flex';
+        return;
+      }
+      const nombre = boton.parentElement.querySelector('h2').textContent;
+      const precio = boton.parentElement.querySelector('.precio').textContent;
+      productos.push({ nombre, precio });
+      contador.textContent = `🛒 ${++totalArticulos}`;
+      actualizarCarrito();
+      carrito.style.display = 'block';
+    });
+  });
+
+  // ✅ Mostrar productos en carrito
+  function actualizarCarrito() {
+    listaCarrito.innerHTML = productos.map(p => `<li>${p.nombre} - ${p.precio}</li>`).join('');
+  }
+
+  // ✅ Finalizar compra
+  finalizarBtn.addEventListener('click', () => {
+    if (productos.length === 0) return alert('Tu carrito está vacío 🛒');
+    alert('✅ ¡Compra realizada!');
+    guardarHistorial(productos);
+    productos = [];
+    totalArticulos = 0;
+    contador.textContent = '🛒 0';
+    listaCarrito.innerHTML = '';
+    carrito.style.display = 'none';
+  });
+
+  // ✅ Iniciar sesión
+  iniciarBtn.addEventListener('click', () => {
+    const nombre = document.getElementById('nombre').value.trim();
+    const correo = document.getElementById('correo').value.trim();
+
+    if (!nombre || !correo) return alert('Completa todos los campos');
+
+    // Si el correo ya existe → usamos sus datos previos
+    if (usuarios[correo]) {
+      alert("Bienvenido de nuevo, " + usuarios[correo].nombre);
+    } else {
+      usuarios[correo] = { nombre, correo, historial: [] };
+      localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    }
+
+    usuarioActual = correo;
+    localStorage.setItem('usuarioActual', usuarioActual);
+
+    loginModal.style.display = 'none';
+    mostrarUsuario();
+  });
+
+  // ✅ Guardar historial de compras por usuario
+  function guardarHistorial(nuevosProductos) {
+    if (!usuarioActual) return;
+    usuarios[usuarioActual].historial.push(...nuevosProductos);
+    localStorage.setItem("usuarios", JSON.stringify(usuarios));
+  }
+
+  // ✅ Mostrar / ocultar cuenta
+  function toggleCuenta() {
+    if (cuentaDiv.style.display === 'block') {
+      cuentaDiv.style.display = 'none';
+    } else {
+      cuentaDiv.style.display = 'block';
+      const user = usuarios[usuarioActual];
+      document.getElementById('nombreCuenta').textContent = user.nombre;
+      document.getElementById('correoCuenta').textContent = user.correo;
+      document.getElementById('historial').innerHTML = user.historial.length
+        ? user.historial.map(p => `<li>${p.nombre} - ${p.precio}</li>`).join('')
+        : 'No hay compras registradas.';
+    }
+  }
+
+  // ✅ Cerrar sesión
+  function cerrarSesion() {
+    usuarioActual = null;
+    localStorage.removeItem("usuarioActual");
+    cuentaDiv.style.display = 'none';
+    mostrarUsuario();
+    alert('Sesión cerrada correctamente');
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+/* ===== ESTILOS GENERALES ===== */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(to bottom, #b3e5fc, #e0f7fa);
+  margin: 0;
+  padding: 0;
+  color: #004d40;
+}
+
+header {
+  background: linear-gradient(90deg, #00796b, #004d40);
+  color: white;
+  text-align: center;
+  padding: 40px 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2.8em;
+  letter-spacing: 2px;
+}
+
+header p {
+  font-size: 1.2em;
+  margin-top: 10px;
+}
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.contenedor {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  padding: 40px;
+}
+
+/* ===== TARJETAS DE PRODUCTO ===== */
+.producto {
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  width: 280px;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.producto:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.producto img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.info {
+  padding: 20px;
+}
+
+.info h2 {
+  color: #00796b;
+  margin-bottom: 10px;
+}
+
+.info p {
+  font-size: 0.95em;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.precio {
+  color: #00796b;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.boton {
+  background-color: #00796b;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.boton:hover {
+  background-color: #004d40;
+  transform: scale(1.05);
+}
+
+/* ===== SECCIÓN DE CRÉDITOS ===== */
+footer {
+  background: #004d40;
+  color: white;
+  text-align: center;
+  padding: 30px 20px;
+  margin-top: 80px;
+  font-size: 0.9em;
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.3);
+}
+
+footer p {
+  margin: 5px 0;
+}
